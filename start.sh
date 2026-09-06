@@ -1,5 +1,10 @@
-#!/bin/bash
-cd /home/container
+#!/usr/bin/env bash
+# Fix Windows carriage return line-ending issues automatically
+set -e
+if [ -f "$0" ]; then
+    sed -i -e 's/\r$//' "$0" 2>/dev/null || tr -d '\r' < "$0" > "$0.tmp" && mv "$0.tmp" "$0"
+fi
+cd /home/container || exit 1
 
 # Self-update/download check on boot
 if [ ! -f "./playit" ]; then
