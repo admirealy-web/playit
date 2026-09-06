@@ -1,6 +1,12 @@
 #!/bin/bash
 cd /home/container
 
+# Self-update/download check on boot
+if [ ! -f "./playit" ]; then
+    curl -o ./playit -L https://github.com/playit-cloud/playit-agent/releases/download/v0.15.2/playit-0.15.2-x86_64-linux
+    chmod +x ./playit
+fi
+
 # --- COLOR PALETTE & STYLING ---
 R="\033[31m"
 G="\033[32m"
@@ -35,15 +41,6 @@ for i in {1..3}; do
 done
 echo -e "${G}[ ✔ System Core Initialized Successfully! ]                     ${RESET}\n"
 
-# --- DEPENDENCY & BINARY CHECK ---
-if [ ! -f "./playit" ]; then
-    echo -e "${Y}[!] Playit binary missing. Fetching latest agent release...${RESET}"
-    curl -o ./playit -L https://github.com/playit-cloud/playit-agent/releases/download/v0.15.2/playit-0.15.2-x86_64-linux
-    chmod +x ./playit
-    echo -e "${G}[✔] Playit binary installed successfully!${RESET}"
-fi
-
-# Set default target port from Pterodactyl environment or fallback
 PORT="${TARGET_PORT:-25565}"
 
 # --- START THE PLAYIT PROCESS ---
